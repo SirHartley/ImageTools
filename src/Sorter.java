@@ -11,11 +11,11 @@ public class Sorter {
 
     public static Image image;
     public static String
-    folderURL = "C:\\Users\\philipp\\Desktop\\MidJourney\\",
-    wFolderURL = "C:\\Users\\philipp\\Desktop\\MidJourney\\good\\",
-    aFolderURL = "C:\\Users\\philipp\\Desktop\\MidJourney\\fix\\",
-    sFolderURL = "C:\\Users\\philipp\\Desktop\\MidJourney\\trash\\",
-    dFolderURL = "C:\\Users\\philipp\\Desktop\\MidJourney\\medium\\";
+    folderURL = "C:\\Users\\Philipp\\Downloads\\imgs\\new\\",
+    wFolderURL = folderURL + "good\\",
+    aFolderURL = folderURL + "fix\\",
+    sFolderURL = folderURL + "trash\\",
+    dFolderURL = folderURL + "medium\\";
 
     public static void main(String[] args) throws IOException {
         sorter();
@@ -25,6 +25,8 @@ public class Sorter {
     private static void sorter() {
         Scanner scan = new Scanner(System.in);
         int i = 0;
+        int frameWidth = 800;
+        int frameHeight = 500;
 
         while (true) {
             i++;
@@ -33,14 +35,12 @@ public class Sorter {
             String pre = "" + i;
             String imageURL = folderURL + pre + ".png";
             if (!Files.isReadable(Paths.get(imageURL))) continue;
-            image = Toolkit.getDefaultToolkit().getImage(imageURL);
+            image = Toolkit.getDefaultToolkit().getImage(imageURL).getScaledInstance(frameWidth, frameHeight, 4);
+
             Frame frame = new Frame();
             frame.add(new Sorter.CustomPaintComponent());
 
-            int frameWidth = 600;
-            int frameHeight = 400;
-
-            frame.setSize(frameWidth, frameHeight);
+            frame.setSize(frameWidth + 100, frameHeight + 100);
             frame.setVisible(true);
 
             String command = Character.toString(scan.nextLine().charAt(0));
