@@ -5,24 +5,86 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Sorter {
 
     public static Image image;
     public static String
-    folderURL = "C:\\Users\\Philipp\\Downloads\\imgs\\new\\",
+    folderURL = "D:\\Starsector\\mods\\Illustrated.Entities\\graphics\\illustrated_entities\\images\\",
     wFolderURL = folderURL + "good\\",
     aFolderURL = folderURL + "fix\\",
     sFolderURL = folderURL + "trash\\",
     dFolderURL = folderURL + "medium\\";
 
     public static void main(String[] args) throws IOException {
-        sorter();
+        populationSorter();
         //cutter();
     }
 
-    private static void sorter() {
+
+    private static void populationSorter() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        int i = 0;
+        int frameWidth = 480;
+        int frameHeight = 300;
+
+        int empty = 0;
+        List<String> inputList = new ArrayList<>();
+
+        while (true) {
+            i++;
+            System.out.println("Image: " + i);
+
+            String pre = "" + i;
+            String imageURL = folderURL + pre + ".png";
+
+            if (!Files.isReadable(Paths.get(imageURL))) {
+                empty++;
+
+                System.out.println("unreadable, skipping " + empty);
+                if (empty > 100){
+                    for (String s : inputList) System.out.println(s);
+                    break;
+                }
+                continue;
+            }
+
+            empty = 0;
+
+            BufferedImage loaded = ImageIO.read(new File(imageURL));
+            image = loaded.getScaledInstance(frameWidth, frameHeight, Image.SCALE_SMOOTH);
+
+            Frame frame = new Frame();
+            frame.add(new Sorter.CustomPaintComponent());
+
+            frame.setSize(frameWidth + 100, frameHeight + 100);
+            frame.setVisible(true);
+
+            String input = scan.nextLine();
+
+            if (input.equals("dump")) {
+                for (String s : inputList) System.out.println(s);
+                continue;
+            }
+
+            //0 nothing
+            //1 hovel
+            //2 arcology/settlement
+            //3 city
+            //4 megacity
+            //enter = any
+
+            if (input.isEmpty()) input = "A";
+
+            inputList.add(pre + ";" + input.charAt(0));
+            frame.dispose();
+        }
+    }
+
+    private static void sorter() throws IOException {
         Scanner scan = new Scanner(System.in);
         int i = 0;
         int frameWidth = 800;
@@ -35,7 +97,9 @@ public class Sorter {
             String pre = "" + i;
             String imageURL = folderURL + pre + ".png";
             if (!Files.isReadable(Paths.get(imageURL))) continue;
-            image = Toolkit.getDefaultToolkit().getImage(imageURL).getScaledInstance(frameWidth, frameHeight, 4);
+
+            BufferedImage loaded = ImageIO.read(new File(imageURL));
+            image = loaded.getScaledInstance(frameWidth, frameHeight, Image.SCALE_SMOOTH);
 
             Frame frame = new Frame();
             frame.add(new Sorter.CustomPaintComponent());

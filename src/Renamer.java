@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 
 public class Renamer {
     public static String folderURL =
-            "C:\\Users\\Philipp\\Downloads\\imgs\\re-numbered, post correction, post rezise and filters";
-    public static String moveToFolder = "C:\\Users\\Philipp\\Downloads\\imgs\\re-numbered, post correction, post rezise and filters\\complete";
+            "C:\\Users\\Philipp\\Downloads\\IE 2\\good";
+    public static String moveToFolder = "C:\\Users\\Philipp\\Downloads\\IE 2\\good\\complete";
 
     public static void main(String[] args) throws IOException {
        sortImagesByColorProfile(folderURL, moveToFolder);
     }
 
     public static void sort(){
-        int num = 0;
+        int num = 1108;
 
         final File folder = new File(folderURL);
         final File destinationFolder = new File(moveToFolder);
@@ -78,7 +78,7 @@ public class Renamer {
                 .collect(Collectors.toList());
 
         // Rename and move files sequentially
-        int count = 1;
+        int count = 1107;
         for (Map.Entry<File, Color> entry : sortedEntries) {
             File imageFile = entry.getKey();
             File newFile = new File(destination + "\\" + count + ".png");
